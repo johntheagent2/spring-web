@@ -2,6 +2,8 @@ package com.designpatternfinal.springweb.model;
 
 
 import com.designpatternfinal.springweb.model.order.Order;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,10 +28,7 @@ public class Food {
     @Column(name="valuePrice")
     private int price;
 
-    @ManyToMany
-    @JoinTable(
-            name = "customer_orders",
-            joinColumns = @JoinColumn(name = "food_id"),
-            inverseJoinColumns = @JoinColumn(name = "orders_id"))
-    private Set<Order> foodOrders = new HashSet<>();
+    @ManyToMany(mappedBy = "foods")
+    @JsonBackReference
+    private Set<Order> foodOrders;
 }

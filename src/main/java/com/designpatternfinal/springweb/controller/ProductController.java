@@ -1,35 +1,33 @@
 package com.designpatternfinal.springweb.controller;
 
-import com.designpatternfinal.springweb.dto.OrderRequest;
-import com.designpatternfinal.springweb.model.User.Account;
-import com.designpatternfinal.springweb.model.User.AccountService;
+import com.designpatternfinal.springweb.Service.AccountService;
+import com.designpatternfinal.springweb.Service.OrderService;
+import com.designpatternfinal.springweb.model.Food;
 import com.designpatternfinal.springweb.model.order.Order;
-import com.designpatternfinal.springweb.model.repository.AccountRepository;
 import com.designpatternfinal.springweb.model.repository.FoodRepository;
 import com.designpatternfinal.springweb.model.repository.OrderRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/orders")
+@Controller
+@RequestMapping("/add")
 public class ProductController {
+    @Autowired
+    FoodRepository foodRepository;
+    @GetMapping
+    public String addFood(){
+        return "add";
+    }
 
-//    @PostMapping
-//    public Order saveOrderWithFoods(@RequestBody Order order){
-//        return new AccountService().saveOrderWithFoods(order);
-//    }
-//
-//    @PostMapping("/placeorder")
-//    public Account placeOrder(@RequestBody OrderRequest orderRequest){
-//        return new AccountService().placeOrder(orderRequest);
-//    }
-//
-//    @GetMapping("/findallorders")
-//    public List<Account> findAllOrders(){
-//        return new AccountService().findAllOrders();
-//    }
+    @PostMapping
+    public String addFood(@ModelAttribute Food food){
+        System.out.println(food.toString());
+        foodRepository.save(food);
+        return "add";
+    }
+
+
 }

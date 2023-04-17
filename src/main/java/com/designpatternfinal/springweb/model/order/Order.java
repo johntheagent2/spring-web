@@ -1,6 +1,8 @@
 package com.designpatternfinal.springweb.model.order;
 
 import com.designpatternfinal.springweb.model.Food;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,12 +18,17 @@ import java.util.Set;
 @Setter
 public class Order {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int oid;
     private String username;
     private int price;
     private String status;
 
-    @ManyToMany(mappedBy = "foodOrders")
-    private Set<Food> foods = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "customer_orders",
+            joinColumns = @JoinColumn(name = "orders_id"),
+            inverseJoinColumns = @JoinColumn(name = "food_id"))
+    @JsonManagedReference
+    private Set<Food> foods;
 }
