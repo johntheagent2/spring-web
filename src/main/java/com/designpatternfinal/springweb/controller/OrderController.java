@@ -1,21 +1,29 @@
 package com.designpatternfinal.springweb.controller;
 
-import com.designpatternfinal.springweb.Service.OrderService;
-import com.designpatternfinal.springweb.model.order.Order;
+import com.designpatternfinal.springweb.Service.FoodService;
+import com.designpatternfinal.springweb.model.Food;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 @Controller
-@RequestMapping("/orders")
 public class OrderController {
+    @Autowired
+    FoodService foodService;
+    @GetMapping("/order")
+    public String allFood(Model model){
+        Iterable<Food> iterable = foodService.findALlFood();
+        List<Food> foods =
+                StreamSupport.stream(iterable.spliterator(), false).toList();
 
-    @GetMapping("/{username}")
-    public List<Order> findOrder(@PathVariable String username){
-        OrderService orderService = new OrderService();
-        return orderService.findOrder(username);
+        for (Food a: foods) {
+            System.out.println(a.toString());
+        }
+        model.addAttribute("foods", foods);
+        return "order";
     }
 }

@@ -1,10 +1,7 @@
-package com.designpatternfinal.springweb.model.User;
+package com.designpatternfinal.springweb.model;
 
-import com.designpatternfinal.springweb.model.order.Order;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,7 +10,7 @@ import java.util.List;
 @Table(name = "ACCOUNT_TABLE")
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String username;
     private String password;

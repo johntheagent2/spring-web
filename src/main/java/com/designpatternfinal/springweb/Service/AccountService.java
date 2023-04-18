@@ -1,6 +1,6 @@
 package com.designpatternfinal.springweb.Service;
 
-import com.designpatternfinal.springweb.model.User.Account;
+import com.designpatternfinal.springweb.model.Account;
 import com.designpatternfinal.springweb.model.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.User;
-
-import java.util.List;
 
 @Service
 public class AccountService implements UserDetailsService {

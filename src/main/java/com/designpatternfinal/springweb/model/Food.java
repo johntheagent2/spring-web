@@ -1,13 +1,10 @@
 package com.designpatternfinal.springweb.model;
 
 
-import com.designpatternfinal.springweb.model.order.Order;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity

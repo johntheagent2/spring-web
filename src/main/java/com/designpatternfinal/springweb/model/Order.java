@@ -1,12 +1,9 @@
-package com.designpatternfinal.springweb.model.order;
+package com.designpatternfinal.springweb.model;
 
-import com.designpatternfinal.springweb.model.Food;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
