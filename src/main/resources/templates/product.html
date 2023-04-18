@@ -19,17 +19,29 @@
         <th scope="col">First</th>
         <th scope="col">Last</th>
         <th scope="col">Handle</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
       </tr>
       </thead>
       <tbody>
-      <tr  th:each="food, iter : ${foods}" >
-        <th scope="row" th:text="${iter.index}"></th>
-        <td th:text="${food.foodName}">Mark</td>
-        <td th:text="${food.desc}">Otto</td>
-        <td th:text="${food.price}">@mdo</td>
+      <tr th:each="food, iter : ${foods}">
+        <th name="foodID" scope="row" th:text="${iter.index + 1}"></th>
+        <td th:text="${food.foodName}"></td>
+        <td th:text="${food.desc}"></td>
+        <td th:text="${food.price}"></td>
+          <td>
+              <a th:href="@{/product/edit(id=${food.fid})}">
+                  <button>Edit</button>
+              </a>
+          </td>
+          <td>
+              <a th:href="@{/product/remove(id=${food.fid})}">
+                  <button>Remove</button>
+              </a>
+          </td>
       </tr>
       </tbody>
     </table>
-    <a href="/product/add" class="book-a-table-btn scrollto d-none d-lg-flex">Add New Product</a>
+    <a href="/product/add" class="book-a-table-btn scrollto d-none d-lg-flex"><button>Add New Product</button></a>
 </body>
 </html>

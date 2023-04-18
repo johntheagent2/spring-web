@@ -20,10 +20,6 @@ public class ProductController {
         Iterable<Food> iterable = foodService.findALlFood();
         List<Food> foods =
                 StreamSupport.stream(iterable.spliterator(), false).toList();
-
-        for (Food a: foods) {
-            System.out.println(a.toString());
-        }
         model.addAttribute("foods", foods);
         return "product";
     }
@@ -39,5 +35,24 @@ public class ProductController {
         return "redirect:/product";
     }
 
+    @GetMapping("/remove")
+    public String removeFood(@RequestParam int id){
+        System.out.println(id);
+        foodService.deleteFood(id);
+        return "redirect:/product";
+    }
 
+
+    @GetMapping("/edit")
+    public String editFood(@RequestParam int id, Model model){
+        Food food = foodService.findFood(id);
+        model.addAttribute("food", food);
+        return "edit";
+    }
+
+    @PostMapping("/edit")
+    public String editFood(@ModelAttribute Food food){
+        foodService.addFood(food);
+        return "redirect:/product";
+    }
 }
