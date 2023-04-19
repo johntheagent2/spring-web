@@ -3,6 +3,8 @@ package com.designpatternfinal.springweb.Service;
 import com.designpatternfinal.springweb.model.Account;
 import com.designpatternfinal.springweb.model.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +24,15 @@ public class AccountService implements UserDetailsService {
         String hash = encoder.encode(account.getPassword());
         account.setPassword(hash);
         accountRepository.save(account);
+    }
+
+    public Account getCurrentAccount(){
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails user = (UserDetails) auth.getPrincipal();
+        String name = user.getUsername();
+
+        return accountRepository.findUserByUsername(name);
     }
 
     @Override
