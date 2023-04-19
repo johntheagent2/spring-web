@@ -31,13 +31,12 @@ public class ProductController {
 
     @PostMapping("/add")
     public String addFood(@ModelAttribute Food food){
-        foodService.addFood(food);
+        foodService.saveOrUpdate(food);
         return "redirect:/product";
     }
 
     @GetMapping("/remove")
     public String removeFood(@RequestParam int id){
-        System.out.println(id);
         foodService.deleteFood(id);
         return "redirect:/product";
     }
@@ -52,7 +51,7 @@ public class ProductController {
 
     @PostMapping("/edit")
     public String editFood(@ModelAttribute Food food){
-        foodService.addFood(food);
+        foodService.saveOrUpdate(food);
         return "redirect:/product";
     }
 }

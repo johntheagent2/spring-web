@@ -18,7 +18,7 @@ public class AccountService implements UserDetailsService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public void addAccount(Account account){
+    public void saveOrUpdate(Account account){
         String hash = encoder.encode(account.getPassword());
         account.setPassword(hash);
         accountRepository.save(account);

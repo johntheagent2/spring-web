@@ -11,7 +11,7 @@ public class FoodService {
     @Autowired
     public FoodRepository foodRepository;
 
-    public void addFood(Food food){
+    public void saveOrUpdate(Food food){
         foodRepository.save(food);
     }
 
