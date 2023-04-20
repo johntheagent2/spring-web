@@ -24,6 +24,7 @@
   </tr>
   </thead>
   <tbody>
+
   <tr th:each="food, iter : ${foods}">
     <th name="foodID" scope="row" th:text="${iter.index + 1}"></th>
     <td th:text="${food.foodName}"></td>
