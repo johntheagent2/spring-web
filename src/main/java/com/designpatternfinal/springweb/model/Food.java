@@ -24,6 +24,7 @@ public class Food {
     private String desc;
     @Column(name="valuePrice")
     private int price;
+    private int quantity;
 
     @ManyToMany(mappedBy = "foods")
     @JsonBackReference

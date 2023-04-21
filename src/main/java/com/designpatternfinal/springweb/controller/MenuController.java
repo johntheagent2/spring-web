@@ -3,9 +3,11 @@ package com.designpatternfinal.springweb.controller;
 import com.designpatternfinal.springweb.Service.AccountService;
 import com.designpatternfinal.springweb.Service.CartService;
 import com.designpatternfinal.springweb.Service.FoodService;
+import com.designpatternfinal.springweb.Service.OrderService;
 import com.designpatternfinal.springweb.dao.CartRequest;
 import com.designpatternfinal.springweb.model.Cart;
 import com.designpatternfinal.springweb.model.Food;
+import com.designpatternfinal.springweb.model.Order;
 import com.designpatternfinal.springweb.model.repository.CartRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.StreamSupport;
 
 @Controller
@@ -30,6 +33,9 @@ public class MenuController {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    OrderService orderService;
 
     List<Food> carts;
 
@@ -61,10 +67,42 @@ public class MenuController {
         List<Food> foods = new ArrayList<>();
 
         for(int i : currentItemInCart){
-            foods.add(foodService.findFood(i));
+            if(foods.contains(foodService.findFood(i)))
+            {
+                for(Food getFood : foods)
+                    if(getFood.getFoodName().equals(foodService.findFood(i).getFoodName())){
+                        getFood.setQuantity(getFood.getQuantity() + 1);
+                        getFood.setPrice(getFood.getPrice() * getFood.getQuantity());
+                    }
+            }
+            else foods.add(foodService.findFood(i));
         }
+
         model.addAttribute("foods", foods);
         return "cart";
+    }
+
+    @GetMapping("/checkout")
+    public String checkoutCart(HttpServletRequest request){
+        Set<Food> foods = new HashSet<>();
+
+        List<Integer> foodList = showCartInSession(request);
+        int price = 0;
+
+        for(int foodid : foodList){
+            foods.add(foodService.findFood(foodid));
+            price = price + foodService.findFood(foodid).getPrice();
+        }
+
+        Order order = new Order();
+        order.setFoods(foods);
+        order.setUsername(accountService.getCurrentAccount().getUsername());
+        order.setStatus("placed");
+        order.setPrice(price);
+
+        orderService.saveOrUpdate(order);
+        System.out.println(order.getPrice());
+        return "redirect:/menu";
     }
 
     public void addToCartUsingSession(int id, HttpServletRequest request){

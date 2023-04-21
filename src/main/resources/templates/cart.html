@@ -20,9 +20,10 @@
   <thead>
   <tr>
     <th scope="col">Num</th>
-    <th scope="col">First</th>
-    <th scope="col">Last</th>
-    <th scope="col">Handle</th>
+    <th scope="col">Food Name</th>
+    <th scope="col">Desc</th>
+    <th scope="col">Quantity</th>
+    <th scope="col">Price</th>
     <th scope="col"></th>
     <th scope="col"></th>
   </tr>
@@ -33,6 +34,7 @@
     <th name="foodID" scope="row" th:text="${iter.index + 1}"></th>
     <td th:text="${food.foodName}"></td>
     <td th:text="${food.desc}"></td>
+    <td th:text="${food.quantity}"></td>
     <td th:text="${food.price}"></td>
     <td>
       <a th:href="@{/menu/add(id=${food.fid})}">
@@ -43,7 +45,7 @@
   </tbody>
 </table>
 <a href="/menu" class="book-a-table-btn scrollto d-none d-lg-flex"><button>Return To Menu</button></a>
-<a href="/checkout" class="book-a-table-btn scrollto d-none d-lg-flex"><button>Checkout</button></a>
+<a href="/menu/checkout" class="book-a-table-btn scrollto d-none d-lg-flex"><button>Checkout</button></a>
 </body>
 </html></title>
 </head>

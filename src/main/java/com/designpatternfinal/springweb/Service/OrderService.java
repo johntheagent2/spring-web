@@ -13,7 +13,7 @@ public class OrderService{
     public OrderRepository orderRepository;
 
     public void saveOrUpdate(Order order){
-
+        orderRepository.save(order);
     }
 
     public List<Order> findOrder(String username){
