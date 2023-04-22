@@ -23,6 +23,9 @@ public class Cart {
     @JoinColumn(name = "fk_acc_id")
     private Account account;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<CartItem> cartItems;
+
     @OneToMany(targetEntity = Food.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "cf_fk", referencedColumnName = "cartId")
     private Set<Food> foodsInCart = new HashSet<>();

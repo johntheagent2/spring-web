@@ -6,6 +6,7 @@ import com.designpatternfinal.springweb.Service.FoodService;
 import com.designpatternfinal.springweb.Service.OrderService;
 import com.designpatternfinal.springweb.dao.CartRequest;
 import com.designpatternfinal.springweb.model.Cart;
+import com.designpatternfinal.springweb.model.CartItem;
 import com.designpatternfinal.springweb.model.Food;
 import com.designpatternfinal.springweb.model.Order;
 import com.designpatternfinal.springweb.model.repository.CartRepository;
@@ -69,13 +70,17 @@ public class MenuController {
         for(int i : currentItemInCart){
             if(foods.contains(foodService.findFood(i)))
             {
-                for(Food getFood : foods)
+                for(Food getFood : foods){
                     if(getFood.getFoodName().equals(foodService.findFood(i).getFoodName())){
                         getFood.setQuantity(getFood.getQuantity() + 1);
-                        getFood.setPrice(getFood.getPrice() * getFood.getQuantity());
                     }
+                }
             }
             else foods.add(foodService.findFood(i));
+        }
+
+        for(Food food : foods){
+            food.setPrice(food.getPrice() * food.getQuantity());
         }
 
         model.addAttribute("foods", foods);
@@ -84,26 +89,71 @@ public class MenuController {
 
     @GetMapping("/checkout")
     public String checkoutCart(HttpServletRequest request){
-        Set<Food> foods = new HashSet<>();
+        List<Integer> currentItemInCart = showCartInSession(request);
 
-        List<Integer> foodList = showCartInSession(request);
-        int price = 0;
+        List<Food> foods = new ArrayList<>();
 
-        for(int foodid : foodList){
-            foods.add(foodService.findFood(foodid));
-            price = price + foodService.findFood(foodid).getPrice();
+        for(int i : currentItemInCart){
+            if(foods.contains(foodService.findFood(i)))
+            {
+                for(Food getFood : foods)
+                    if(getFood.getFoodName().equals(foodService.findFood(i).getFoodName())){
+                        getFood.setQuantity(getFood.getQuantity() + 1);
+                    }
+            }
+            else foods.add(foodService.findFood(i));
+        }
+
+        int totalPrice = 0;
+
+        for(Food food : foods){
+            food.setPrice(food.getPrice() * food.getQuantity());
+            totalPrice = totalPrice + food.getPrice();
         }
 
         Order order = new Order();
-        order.setFoods(foods);
+
+        Set<CartItem> cartItemSet = new HashSet<>();
+
+        for(Food food : foods){
+            CartItem cartItem = new CartItem();
+            cartItem.setQuantity(food.getQuantity());
+            cartItem.setPrice(food.getPrice());
+            cartItemSet.add(cartItem);
+        }
+        order.setCartItems(cartItemSet);
+
+        Set<Food> foodSet = new HashSet<>(foods);
+
         order.setUsername(accountService.getCurrentAccount().getUsername());
         order.setStatus("placed");
-        order.setPrice(price);
+        order.setPrice(totalPrice);
 
         orderService.saveOrUpdate(order);
         System.out.println(order.getPrice());
         return "redirect:/menu";
     }
+
+    public int getQuantity(HttpServletRequest request){
+        List<Integer> currentItemInCart = showCartInSession(request);
+
+        List<Food> foods = new ArrayList<>();
+
+        int quantity = 1;
+
+        for(int i : currentItemInCart){
+            if(foods.contains(foodService.findFood(i)))
+            {
+                for(Food getFood : foods)
+                    if(getFood.getFoodName().equals(foodService.findFood(i).getFoodName())){
+                        quantity = quantity + 1;
+                    }
+            }
+            else foods.add(foodService.findFood(i));
+        }
+        return quantity;
+    }
+
 
     public void addToCartUsingSession(int id, HttpServletRequest request){
         HttpSession session = request.getSession();

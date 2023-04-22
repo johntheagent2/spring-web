@@ -1,5 +1,6 @@
 package com.designpatternfinal.springweb.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,11 +22,18 @@ public class Order {
     private int price;
     private String status;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "customer_orders",
-            joinColumns = @JoinColumn(name = "orders_id"),
-            inverseJoinColumns = @JoinColumn(name = "food_id"))
-    @JsonManagedReference
+            joinColumns = {
+                    @JoinColumn(name = "orders_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "food_id")
+            })
+    @JsonBackReference
     private Set<Food> foods;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<CartItem> cartItems;
 }

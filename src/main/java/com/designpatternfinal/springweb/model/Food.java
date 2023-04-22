@@ -26,7 +26,7 @@ public class Food {
     private int price;
     private int quantity;
 
-    @ManyToMany(mappedBy = "foods")
+    @ManyToMany(mappedBy = "foods", fetch = FetchType.LAZY)
     @JsonBackReference
     private Set<Order> foodOrders;
 }
