@@ -16,14 +16,11 @@ public class CartItem {
     private int quantity;
     private int price;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "oid", referencedColumnName = "oid")
     private Order order;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "productId", referencedColumnName = "fid")
     private Food food;
-
-    public CartItem(int quantity, int price, Food food){
-    }
 }

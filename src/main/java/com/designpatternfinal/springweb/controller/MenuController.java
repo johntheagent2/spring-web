@@ -1,15 +1,11 @@
 package com.designpatternfinal.springweb.controller;
 
 import com.designpatternfinal.springweb.Service.AccountService;
-import com.designpatternfinal.springweb.Service.CartService;
 import com.designpatternfinal.springweb.Service.FoodService;
 import com.designpatternfinal.springweb.Service.OrderService;
-import com.designpatternfinal.springweb.dao.CartRequest;
-import com.designpatternfinal.springweb.model.Cart;
 import com.designpatternfinal.springweb.model.CartItem;
 import com.designpatternfinal.springweb.model.Food;
 import com.designpatternfinal.springweb.model.Order;
-import com.designpatternfinal.springweb.model.repository.CartRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.StreamSupport;
 
 @Controller
@@ -61,69 +54,53 @@ public class MenuController {
 
     @GetMapping("/cart")
     public String showCart(Model model, HttpServletRequest request){
-        List<Integer> currentItemInCart = showCartInSession(request);
+        List<Food> currentItemInCart = showCartInSession(request);
+        System.out.println(currentItemInCart);
 
         if(currentItemInCart == null) return "cart";
 
         List<Food> foods = new ArrayList<>();
 
-        for(int i : currentItemInCart){
-            if(foods.contains(foodService.findFood(i)))
-            {
-                for(Food getFood : foods){
-                    if(getFood.getFoodName().equals(foodService.findFood(i).getFoodName())){
-                        getFood.setQuantity(getFood.getQuantity() + 1);
-                    }
-                }
+        for(Food food : currentItemInCart){
+            if(foods.contains(food)){
+                food.setQuantity(food.getQuantity() + 1);
+            }else{
+                foods.add(food);
             }
-            else foods.add(foodService.findFood(i));
         }
 
         for(Food food : foods){
             food.setPrice(food.getPrice() * food.getQuantity());
         }
 
+        System.out.println(foods);
         model.addAttribute("foods", foods);
         return "cart";
     }
 
     @GetMapping("/checkout")
     public String checkoutCart(HttpServletRequest request){
-        List<Integer> currentItemInCart = showCartInSession(request);
-
-        List<Food> foods = new ArrayList<>();
-
-        for(int i : currentItemInCart){
-            if(foods.contains(foodService.findFood(i)))
-            {
-                for(Food getFood : foods)
-                    if(getFood.getFoodName().equals(foodService.findFood(i).getFoodName())){
-                        getFood.setQuantity(getFood.getQuantity() + 1);
-                    }
-            }
-            else foods.add(foodService.findFood(i));
-        }
+        List<Food> currentItemInCart = showCartInSession(request);
 
         int totalPrice = 0;
 
-        for(Food food : foods){
-            food.setPrice(food.getPrice() * food.getQuantity());
+        for(Food food : currentItemInCart){
             totalPrice = totalPrice + food.getPrice();
         }
 
-        Order order = new Order();
-
         Set<CartItem> cartItemSet = new HashSet<>();
 
-        for(Food food : foods){
+        for(Food food : currentItemInCart){
             CartItem cartItem = new CartItem();
-            cartItem.setQuantity(food.getQuantity());
+            cartItem.setQuantity(Collections.frequency(currentItemInCart, food));
             cartItem.setPrice(food.getPrice());
+            cartItem.setFood(food);
             cartItemSet.add(cartItem);
         }
-        order.setCartItems(cartItemSet);
 
-        Set<Food> foodSet = new HashSet<>(foods);
+
+        Order order = new Order();
+        order.setCartItems(cartItemSet);
 
         order.setUsername(accountService.getCurrentAccount().getUsername());
         order.setStatus("placed");
@@ -131,29 +108,11 @@ public class MenuController {
 
         orderService.saveOrUpdate(order);
         System.out.println(order.getPrice());
+
+        HttpSession session = request.getSession();
+        session.removeAttribute("list");
         return "redirect:/menu";
     }
-
-    public int getQuantity(HttpServletRequest request){
-        List<Integer> currentItemInCart = showCartInSession(request);
-
-        List<Food> foods = new ArrayList<>();
-
-        int quantity = 1;
-
-        for(int i : currentItemInCart){
-            if(foods.contains(foodService.findFood(i)))
-            {
-                for(Food getFood : foods)
-                    if(getFood.getFoodName().equals(foodService.findFood(i).getFoodName())){
-                        quantity = quantity + 1;
-                    }
-            }
-            else foods.add(foodService.findFood(i));
-        }
-        return quantity;
-    }
-
 
     public void addToCartUsingSession(int id, HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -168,11 +127,16 @@ public class MenuController {
         session.setAttribute("list",listId);
     }
 
-    public List<Integer> showCartInSession(HttpServletRequest request){
-        HttpSession s1=request.getSession();
-        List<Integer> list1= new ArrayList<>();
 
-        list1= (ArrayList<Integer>)(s1.getAttribute("list"));
-        return list1;
+    public List<Food> showCartInSession(HttpServletRequest request){
+        HttpSession s1=request.getSession();
+
+        List<Integer> list1= (ArrayList<Integer>)(s1.getAttribute("list"));
+
+        List<Food> foodList = new ArrayList<>();
+        for(Integer list : list1){
+                foodList.add(foodService.findFood(list));
+        }
+        return foodList;
     }
 }

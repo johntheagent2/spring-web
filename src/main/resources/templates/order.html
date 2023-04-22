@@ -120,7 +120,7 @@
         <p>
         <h3></h3>
         <ul th:each="order : ${orderList}">
-          <li th:each="food : ${order.foods}" th:text="${food.foodName} + ' ' + ${food.desc} + ' ' + ${food.quantity} + ' ' + ${food.price}"></li>
+          <li th:each="carItem : ${order.cartItems}" th:text="${carItem.food.foodName} + ' ' + ${carItem.food.desc} + ' ' + ${carItem.quantity} + ' ' + ${carItem.quantity * carItem.food.price}"></li>
         </ul>
         </p>
       </div>

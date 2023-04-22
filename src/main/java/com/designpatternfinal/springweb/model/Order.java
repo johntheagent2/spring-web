@@ -22,18 +22,6 @@ public class Order {
     private int price;
     private String status;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "customer_orders",
-            joinColumns = {
-                    @JoinColumn(name = "orders_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "food_id")
-            })
-    @JsonBackReference
-    private Set<Food> foods;
-
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.PERSIST)
     private Set<CartItem> cartItems;
 }

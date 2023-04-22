@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -24,7 +25,9 @@ public class OrderController {
     @GetMapping("/order")
     public String allFood(Model model){
         List<Order> orderList = orderService.findOrder(accountService.getCurrentAccount().getUsername());
-        model.addAttribute("orderList", orderList);
+        List<Order> ordersToPrint = new ArrayList<>();
+
+        model.addAttribute("orderList", ordersToPrint);
         return "order";
     }
 }
