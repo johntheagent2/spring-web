@@ -91,11 +91,18 @@ public class MenuController {
         Set<CartItem> cartItemSet = new HashSet<>();
 
         for(Food food : currentItemInCart){
+            int flag = 0;
             CartItem cartItem = new CartItem();
             cartItem.setQuantity(Collections.frequency(currentItemInCart, food));
             cartItem.setPrice(food.getPrice());
             cartItem.setFood(food);
-            cartItemSet.add(cartItem);
+            for(CartItem cartItemCheck : cartItemSet){
+                if(cartItemCheck.getFood().getFoodName().equals(cartItem.getFood().getFoodName())){
+                    flag++;
+                }
+            }
+            if(flag == 0)
+                cartItemSet.add(cartItem);
         }
 
 

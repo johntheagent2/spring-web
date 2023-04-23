@@ -1,6 +1,7 @@
 package com.designpatternfinal.springweb.Service;
 
 import com.designpatternfinal.springweb.model.Account;
+import com.designpatternfinal.springweb.model.Food;
 import com.designpatternfinal.springweb.model.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,17 +14,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.User;
 
 @Service
-public class AccountService implements UserDetailsService {
+public class AccountService implements UserDetailsService, IService {
 
     @Autowired
     private PasswordEncoder encoder;
     @Autowired
     private AccountRepository accountRepository;
 
-    public void saveOrUpdate(Account account){
-        String hash = encoder.encode(account.getPassword());
-        account.setPassword(hash);
-        accountRepository.save(account);
+    @Override
+    public void saveOrUpdate(Object o) {
+        String hash = encoder.encode(((Account)o).getPassword());
+        ((Account)o).setPassword(hash);
+        accountRepository.save(((Account)o));
     }
 
     public Account getCurrentAccount(){

@@ -7,14 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FoodService {
+public class FoodService implements IService{
     @Autowired
     public FoodRepository foodRepository;
-
-    public void saveOrUpdate(Food food){
-        foodRepository.save(food);
+    @Override
+    public void saveOrUpdate(Object o) {
+        foodRepository.save((Food) o);
     }
-
     public void deleteFood(int id){
         foodRepository.deleteById(id);
     }
@@ -22,7 +21,6 @@ public class FoodService {
     public void updateFood(Food food){
 
     }
-
     public Iterable<Food> findALlFood(){
         return foodRepository.findAll();
     }
@@ -30,4 +28,5 @@ public class FoodService {
     public Food findFood(int id){
         return foodRepository.findByFid(id);
     }
+
 }
