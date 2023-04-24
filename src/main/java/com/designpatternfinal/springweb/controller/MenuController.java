@@ -55,9 +55,6 @@ public class MenuController {
     @GetMapping("/cart")
     public String showCart(Model model, HttpServletRequest request){
         List<Food> currentItemInCart = showCartInSession(request);
-        System.out.println(currentItemInCart);
-
-        if(currentItemInCart == null) return "cart";
 
         List<Food> foods = new ArrayList<>();
 
@@ -79,7 +76,7 @@ public class MenuController {
     }
 
     @GetMapping("/checkout")
-    public String checkoutCart(HttpServletRequest request){
+    public String checkoutCart(HttpServletRequest request, @RequestParam("radioName") String receiveFood){
         List<Food> currentItemInCart = showCartInSession(request);
 
         int totalPrice = 0;
@@ -110,7 +107,9 @@ public class MenuController {
         order.setCartItems(cartItemSet);
 
         order.setUsername(accountService.getCurrentAccount().getUsername());
-        order.setStatus("placed");
+        order.setStatus("Pending");
+        order.setPayment(receiveFood);
+        System.out.println(receiveFood);
         order.setPrice(totalPrice);
 
         orderService.saveOrUpdate(order);
@@ -141,6 +140,10 @@ public class MenuController {
         List<Integer> list1= (ArrayList<Integer>)(s1.getAttribute("list"));
 
         List<Food> foodList = new ArrayList<>();
+
+        if(list1 == null)
+            return foodList;
+
         for(Integer list : list1){
                 foodList.add(foodService.findFood(list));
         }

@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -25,7 +28,95 @@ public class AdminController {
         Iterable<Order> iterable = orderService.getAllOrder();
         List<Order> orderList =
                 StreamSupport.stream(iterable.spliterator(), false).toList();
+
+        List<Order> shippingOrderList = new ArrayList<>();
+
+        for(Order order : orderList){
+            if(!order.getStatus().equals("Ready") || !order.getStatus().equals("Done")){
+                shippingOrderList.add(order);
+            }
+        }
+
         model.addAttribute("orderList", orderList);
         return "admin";
+    }
+
+    @GetMapping ("/admin_shipping")
+    public String seeAdminShipping(Model model){
+        Iterable<Order> iterable = orderService.getAllOrder();
+        List<Order> orderList =
+                StreamSupport.stream(iterable.spliterator(), false).toList();
+
+        List<Order> shippingOrderList = new ArrayList<>();
+
+        for(Order order : orderList){
+            if(order.getPayment().equals("shipping")){
+                shippingOrderList.add(order);
+            }
+        }
+
+        model.addAttribute("orderList", shippingOrderList);
+        return "admin_shipping";
+    }
+
+    @GetMapping ("/admin_pickup")
+    public String seeAdminPickup(Model model){
+        Iterable<Order> iterable = orderService.getAllOrder();
+        List<Order> orderList =
+                StreamSupport.stream(iterable.spliterator(), false).toList();
+
+        List<Order> shippingOrderList = new ArrayList<>();
+
+        for(Order order : orderList){
+            if(order.getPayment().equals("selfPickup")){
+                shippingOrderList.add(order);
+            }
+        }
+
+        model.addAttribute("orderList", shippingOrderList);
+        return "admin_pickup";
+    }
+
+    @GetMapping ("/admin_ready")
+    public String seeAdminReady(Model model){
+        Iterable<Order> iterable = orderService.getAllOrder();
+        List<Order> orderList =
+                StreamSupport.stream(iterable.spliterator(), false).toList();
+
+        List<Order> shippingOrderList = new ArrayList<>();
+
+        for(Order order : orderList){
+            if(order.getStatus().equals("Ready")){
+                shippingOrderList.add(order);
+            }
+        }
+
+        model.addAttribute("orderList", shippingOrderList);
+        return "admin_ready";
+    }
+
+    @GetMapping("/update")
+    public String updateStatusOfOrder(@RequestParam int id){
+        Order order = orderService.findOrderByOrderID(id);
+        System.out.println(order.getOid() + order.getUsername());
+        switch (order.getStatus()) {
+            case "Placed" -> {
+                order.setStatus("In Kitchen");
+                orderService.saveOrUpdate(order);
+                return "redirect:/admin";
+            }
+            case "In Kitchen" -> {
+                order.setStatus("Ready");
+                orderService.saveOrUpdate(order);
+                return "redirect:/admin";
+            }
+            case "Ready" -> {
+                order.setStatus("Done");
+                orderService.saveOrUpdate(order);
+                return "redirect:/admin";
+            }
+        }
+
+        return "redirect:/admin";
     }
 }

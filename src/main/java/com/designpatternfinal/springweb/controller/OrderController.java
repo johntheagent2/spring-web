@@ -24,7 +24,7 @@ public class OrderController {
     AccountService accountService;
     @GetMapping("/order")
     public String allFood(Model model){
-        List<Order> orderList = orderService.findOrder(accountService.getCurrentAccount().getUsername());
+        List<Order> orderList = orderService.findOrderOfAccount(accountService.getCurrentAccount().getUsername());
         model.addAttribute("orderList", orderList);
         return "order";
     }

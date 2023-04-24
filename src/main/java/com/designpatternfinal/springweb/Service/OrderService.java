@@ -21,8 +21,10 @@ public class OrderService implements IService{
     public Iterable<Order> getAllOrder(){
         return orderRepository.findAll();
     }
-
-    public List<Order> findOrder(String username){
+    public List<Order> findOrderOfAccount(String username){
         return orderRepository.findOrderByUsername(username);
+    }
+    public Order findOrderByOrderID(int oid){
+        return orderRepository.findOrderByOid(oid);
     }
 }

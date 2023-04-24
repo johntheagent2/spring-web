@@ -44,8 +44,16 @@
   </tr>
   </tbody>
 </table>
+<form th:action="@{/menu/checkout}" method="get">
+  <label  class="radio-inline">
+    <input type="radio" th:name="radioName" id="selfPickup" value="selfPickup" checked="checked"/>Self Pickup
+  </label>
+  <label  class="radio-inline">
+    <input  type="radio" th:name="radioName"  id="shipping" value="shipping"/>Shipping
+  </label>
+  <button type="submit" value="Submit">Checkout</button></a>
+</form>
 <a href="/menu" class="book-a-table-btn scrollto d-none d-lg-flex"><button>Return To Menu</button></a>
-<a href="/menu/checkout" class="book-a-table-btn scrollto d-none d-lg-flex"><button>Checkout</button></a>
 </body>
 </html></title>
 </head>
