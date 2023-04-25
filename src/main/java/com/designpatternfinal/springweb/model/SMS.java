@@ -1,17 +1,15 @@
-package com.designpatternfinal.springweb.controller;
+package com.designpatternfinal.springweb.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class Email {
-    private String sender = "caophat113@gmail.com";
+public class SMS {
     private String receiver;
-    private String subject;
     private String body;
 }

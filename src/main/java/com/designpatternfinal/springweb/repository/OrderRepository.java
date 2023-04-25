@@ -1,4 +1,4 @@
-package com.designpatternfinal.springweb.model.repository;
+package com.designpatternfinal.springweb.repository;
 
 import com.designpatternfinal.springweb.model.Order;
 import org.springframework.data.repository.CrudRepository;

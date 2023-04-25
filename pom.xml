@@ -76,7 +76,12 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 			<version>3.0.6</version>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/com.twilio.sdk/twilio -->
+		<dependency>
+			<groupId>com.twilio.sdk</groupId>
+			<artifactId>twilio</artifactId>
+			<version>9.5.0</version>
+		</dependency>
 
 	</dependencies>
 

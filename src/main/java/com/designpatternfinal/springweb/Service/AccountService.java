@@ -1,8 +1,7 @@
 package com.designpatternfinal.springweb.Service;
 
 import com.designpatternfinal.springweb.model.Account;
-import com.designpatternfinal.springweb.model.Food;
-import com.designpatternfinal.springweb.model.repository.AccountRepository;
+import com.designpatternfinal.springweb.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

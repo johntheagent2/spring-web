@@ -2,12 +2,14 @@ package com.designpatternfinal.springweb.controller;
 
 import com.designpatternfinal.springweb.Service.OrderService;
 
+import com.designpatternfinal.springweb.Service.SMSService;
+import com.designpatternfinal.springweb.Service.SubscriberService;
 import com.designpatternfinal.springweb.model.Order;
+import com.designpatternfinal.springweb.model.SMS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,6 +23,10 @@ public class AdminController {
 
     @Autowired
     OrderService orderService;
+    @Autowired
+    SubscriberService subscriberService;
+    @Autowired
+    SMSService smsService;
 
 
     @GetMapping
@@ -93,6 +99,19 @@ public class AdminController {
 
         model.addAttribute("orderList", shippingOrderList);
         return "admin_ready";
+    }
+
+    @GetMapping("/send_mail")
+    public String sendMailUpdateForSubscriber(){
+        return "/send_mail";
+    }
+
+    @GetMapping("/mail_sent")
+    public String sendMailUpdateForSubscriberPost(@RequestParam String updateText){
+//        subscriberService.notifySubscribers(updateText);
+        SMS smsMessage = new SMS("+84703001286", "Hello There Test Text From Restaurantly");
+        smsService.sendSMS(smsMessage);
+        return "redirect:/admin";
     }
 
     @GetMapping("/update")

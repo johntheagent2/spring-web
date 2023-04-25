@@ -1,9 +1,7 @@
 package com.designpatternfinal.springweb.Service;
 
-import com.designpatternfinal.springweb.model.Account;
-import com.designpatternfinal.springweb.model.Food;
 import com.designpatternfinal.springweb.model.Order;
-import com.designpatternfinal.springweb.model.repository.OrderRepository;
+import com.designpatternfinal.springweb.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

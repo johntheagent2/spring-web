@@ -17,5 +17,7 @@ public class Account {
     private String fullName;
     private String address;
     private String phoneNum;
+    private String email;
     private String role;
+    private boolean isSubscribed = false;
 }

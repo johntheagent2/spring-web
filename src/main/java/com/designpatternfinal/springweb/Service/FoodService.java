@@ -1,8 +1,7 @@
 package com.designpatternfinal.springweb.Service;
 
 import com.designpatternfinal.springweb.model.Food;
-import com.designpatternfinal.springweb.model.repository.FoodRepository;
-import com.mysql.cj.Session;
+import com.designpatternfinal.springweb.repository.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,8 @@
 package com.designpatternfinal.springweb.controller;
+import com.designpatternfinal.springweb.Service.AccountService;
+import com.designpatternfinal.springweb.Service.SubscriberService;
+import com.designpatternfinal.springweb.model.Account;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class HomeController {
 
+    @Autowired
+    AccountService accountService;
+    @Autowired
+    SubscriberService subscriberService;
+
     @GetMapping("/")
     public String home(){
         return "home";
@@ -18,10 +27,22 @@ public class HomeController {
 
     @PostMapping("/")
     public String home(Model model){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails user = (UserDetails) auth.getPrincipal();
-        String name = user.getUsername();
-        model.addAttribute("name", name);
+        Account account = accountService.getCurrentAccount();
+        model.addAttribute("account", account);
         return "home";
+    }
+
+    @GetMapping("/profile")
+    public String showProfile(Model model){
+        Account account = accountService.getCurrentAccount();
+        model.addAttribute("account", account);
+
+        return "profile";
+    }
+
+    @GetMapping("/subscribe")
+    public String showProfile(){
+        subscriberService.subscriberHandler();
+        return "redirect:/profile";
     }
 }

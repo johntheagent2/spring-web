@@ -1,24 +1,25 @@
 package com.designpatternfinal.springweb.Service;
 
-import com.designpatternfinal.springweb.controller.Email;
+import com.designpatternfinal.springweb.model.Mail;
+import com.designpatternfinal.springweb.model.Subscribers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+
 @Service
-public class MailSenderService {
+public class MailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void senEmail(Email email){
+    public void update(Subscribers subscriber, String updateText){
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(email.getSender());
-        message.setTo(email.getReceiver());
-        message.setSubject(email.getSubject());
-        message.setText(email.getBody());
-
+        message.setFrom("caophat113@gmail.com");
+        message.setTo(subscriber.getEmail());
+        message.setSubject("NEW UPDATE FROM RESTAURANTLY");
+        message.setText(updateText);
         mailSender.send(message);
-        System.out.println("Email sent successfully");
     }
+
 }
