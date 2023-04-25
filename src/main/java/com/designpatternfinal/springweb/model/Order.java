@@ -20,7 +20,6 @@ public class Order {
     private int oid;
     private String username;
     private int price;
-    private String payment;
     private String status;
 
     @OneToMany(cascade = CascadeType.PERSIST)

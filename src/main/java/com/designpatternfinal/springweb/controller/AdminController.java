@@ -1,11 +1,11 @@
 package com.designpatternfinal.springweb.controller;
 
-import com.designpatternfinal.springweb.Service.OrderService;
+import com.designpatternfinal.springweb.Service.*;
 
-import com.designpatternfinal.springweb.Service.SMSService;
-import com.designpatternfinal.springweb.Service.SubscriberService;
 import com.designpatternfinal.springweb.model.Order;
+import com.designpatternfinal.springweb.model.PickupPayment;
 import com.designpatternfinal.springweb.model.SMS;
+import com.designpatternfinal.springweb.model.ShippingPayment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +27,10 @@ public class AdminController {
     SubscriberService subscriberService;
     @Autowired
     SMSService smsService;
+    @Autowired
+    ShippingPaymentService shippingPaymentService;
+    @Autowired
+    PickupPaymentService pickupPaymentService;
 
 
     @GetMapping
@@ -49,16 +53,14 @@ public class AdminController {
 
     @GetMapping ("/admin_shipping")
     public String seeAdminShipping(Model model){
-        Iterable<Order> iterable = orderService.getAllOrder();
-        List<Order> orderList =
+        Iterable<ShippingPayment> iterable = shippingPaymentService.getAll();
+        List<ShippingPayment> orderList =
                 StreamSupport.stream(iterable.spliterator(), false).toList();
 
         List<Order> shippingOrderList = new ArrayList<>();
 
-        for(Order order : orderList){
-            if(order.getPayment().equals("shipping")){
-                shippingOrderList.add(order);
-            }
+        for(ShippingPayment shippingPayment : orderList){
+            shippingOrderList.add(shippingPayment.getOrder());
         }
 
         model.addAttribute("orderList", shippingOrderList);
@@ -67,16 +69,14 @@ public class AdminController {
 
     @GetMapping ("/admin_pickup")
     public String seeAdminPickup(Model model){
-        Iterable<Order> iterable = orderService.getAllOrder();
-        List<Order> orderList =
+        Iterable<PickupPayment> iterable = pickupPaymentService.getAll();
+        List<PickupPayment> orderList =
                 StreamSupport.stream(iterable.spliterator(), false).toList();
 
         List<Order> shippingOrderList = new ArrayList<>();
 
-        for(Order order : orderList){
-            if(order.getPayment().equals("selfPickup")){
-                shippingOrderList.add(order);
-            }
+        for(PickupPayment shippingPayment : orderList){
+            shippingOrderList.add(shippingPayment.getOrder());
         }
 
         model.addAttribute("orderList", shippingOrderList);

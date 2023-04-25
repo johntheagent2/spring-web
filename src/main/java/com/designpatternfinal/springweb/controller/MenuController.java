@@ -1,11 +1,7 @@
 package com.designpatternfinal.springweb.controller;
 
-import com.designpatternfinal.springweb.Service.AccountService;
-import com.designpatternfinal.springweb.Service.FoodService;
-import com.designpatternfinal.springweb.Service.OrderService;
-import com.designpatternfinal.springweb.model.CartItem;
-import com.designpatternfinal.springweb.model.Food;
-import com.designpatternfinal.springweb.model.Order;
+import com.designpatternfinal.springweb.Service.*;
+import com.designpatternfinal.springweb.model.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +20,13 @@ public class MenuController {
 
     @Autowired
     FoodService foodService;
-
     @Autowired
     AccountService accountService;
-
     @Autowired
     OrderService orderService;
-
     List<Food> carts;
+    @Autowired
+    PaymentService paymentService;
 
     @GetMapping
     public String seeMenu(Model model){
@@ -108,12 +103,9 @@ public class MenuController {
 
         order.setUsername(accountService.getCurrentAccount().getUsername());
         order.setStatus("Pending");
-        order.setPayment(receiveFood);
-        System.out.println(receiveFood);
         order.setPrice(totalPrice);
 
-        orderService.saveOrUpdate(order);
-        System.out.println(order.getPrice());
+        paymentService.processOrder(order, receiveFood);
 
         HttpSession session = request.getSession();
         session.removeAttribute("list");

@@ -16,10 +16,6 @@ public class FoodService implements IService{
     public void deleteFood(int id){
         foodRepository.deleteById(id);
     }
-
-    public void updateFood(Food food){
-
-    }
     public Iterable<Food> findALlFood(){
         return foodRepository.findAll();
     }
