@@ -21,6 +21,7 @@ public class ShippingPaymentService implements PaymentStrategy{
     @Override
     public void pay(Order order) {
         ShippingPayment shippingPayment = new ShippingPayment();
+        order.setPrice(order.getPrice() + 25000);
         shippingPayment.setOrder(order);
         orderService.saveOrUpdate(order);
         saveOrUpdate(shippingPayment);

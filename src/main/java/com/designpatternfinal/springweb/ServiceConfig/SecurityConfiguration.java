@@ -33,6 +33,7 @@ public class SecurityConfiguration{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
                 .requestMatchers("/", "/js/**", "/css/**", "/img/**", "/vendor/**", "/login").permitAll()
+                .requestMatchers("/admin/**", "/product/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .loginPage("/login")
