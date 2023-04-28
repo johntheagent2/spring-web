@@ -2,10 +2,7 @@ package com.designpatternfinal.springweb.controller;
 
 import com.designpatternfinal.springweb.Service.*;
 
-import com.designpatternfinal.springweb.model.Order;
-import com.designpatternfinal.springweb.model.PickupPayment;
-import com.designpatternfinal.springweb.model.SMS;
-import com.designpatternfinal.springweb.model.ShippingPayment;
+import com.designpatternfinal.springweb.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +28,8 @@ public class AdminController {
     ShippingPaymentService shippingPaymentService;
     @Autowired
     PickupPaymentService pickupPaymentService;
+    @Autowired
+    AccountService accountService;
 
 
     @GetMapping
@@ -42,12 +41,13 @@ public class AdminController {
         List<Order> shippingOrderList = new ArrayList<>();
 
         for(Order order : orderList){
-            if(!order.getStatus().equals("Ready") || !order.getStatus().equals("Done")){
+            if(!order.getStatus().equals("Done")){
                 shippingOrderList.add(order);
             }
         }
 
-        model.addAttribute("orderList", orderList);
+        model.addAttribute("account", accountService.getCurrentAccount());
+        model.addAttribute("orderList", shippingOrderList);
         return "admin";
     }
 
@@ -108,8 +108,8 @@ public class AdminController {
 
     @GetMapping("/mail_sent")
     public String sendMailUpdateForSubscriberPost(@RequestParam String updateText){
-//        subscriberService.notifySubscribers(updateText);
-        SMS smsMessage = new SMS("+84703001286", "Hello There Test Text From Restaurantly");
+        subscriberService.notifySubscribers(updateText);
+        SMS smsMessage = new SMS("+84707854816", "Hello There Test Text From Restaurantly");
         smsService.sendSMS(smsMessage);
         return "redirect:/admin";
     }
@@ -119,7 +119,7 @@ public class AdminController {
         Order order = orderService.findOrderByOrderID(id);
         System.out.println(order.getOid() + order.getUsername());
         switch (order.getStatus()) {
-            case "Placed" -> {
+            case "Pending" -> {
                 order.setStatus("In Kitchen");
                 orderService.saveOrUpdate(order);
                 return "redirect:/admin";

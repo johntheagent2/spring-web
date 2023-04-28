@@ -66,8 +66,32 @@ public class MenuController {
         }
 
         System.out.println(foods);
+        model.addAttribute("account", accountService.getCurrentAccount());
         model.addAttribute("foods", foods);
         return "cart";
+    }
+
+    @GetMapping("/delete_cart_item")
+    public String deleteCartItem(@RequestParam("radioName") int id, HttpServletRequest request){
+        List<Food> currentItemInCart = showCartInSession(request);
+
+        List<Food> foods = new ArrayList<>();
+
+        for(Food food : currentItemInCart){
+            if(foods.contains(food)){
+                food.setQuantity(food.getQuantity() + 1);
+            }else{
+                foods.add(food);
+            }
+        }
+
+        for(Food food : foods){
+            if(food.getFid() == id){
+                food.setQuantity(food.getQuantity() - 1);
+            }
+        }
+
+        return "redirect:/cart";
     }
 
     @GetMapping("/checkout")
