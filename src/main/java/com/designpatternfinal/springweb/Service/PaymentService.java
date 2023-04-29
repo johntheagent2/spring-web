@@ -8,8 +8,9 @@ import org.springframework.stereotype.Service;
 public class PaymentService {
     @Autowired
     private PaymentFactory factory;
+    PaymentStrategy paymentService;
     public void processOrder(Order order, String paymentMethod){
-        PaymentStrategy paymentService = factory.getInstance(paymentMethod);
+        paymentService = factory.getInstance(paymentMethod);
         paymentService.pay(order);
         System.out.println(order.getPrice());
     }

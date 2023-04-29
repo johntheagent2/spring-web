@@ -17,13 +17,10 @@ import java.util.stream.StreamSupport;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-
     @Autowired
     OrderService orderService;
     @Autowired
     SubscriberService subscriberService;
-    @Autowired
-    SMSService smsService;
     @Autowired
     ShippingPaymentService shippingPaymentService;
     @Autowired
@@ -31,10 +28,9 @@ public class AdminController {
     @Autowired
     AccountService accountService;
 
-
     @GetMapping
     public String seeAdminPage(Model model){
-        Iterable<Order> iterable = orderService.getAllOrder();
+        Iterable<Order> iterable = orderService.getAll();
         List<Order> orderList =
                 StreamSupport.stream(iterable.spliterator(), false).toList();
 
@@ -85,7 +81,7 @@ public class AdminController {
 
     @GetMapping ("/admin_ready")
     public String seeAdminReady(Model model){
-        Iterable<Order> iterable = orderService.getAllOrder();
+        Iterable<Order> iterable = orderService.getAll();
         List<Order> orderList =
                 StreamSupport.stream(iterable.spliterator(), false).toList();
 
@@ -109,8 +105,6 @@ public class AdminController {
     @GetMapping("/mail_sent")
     public String sendMailUpdateForSubscriberPost(@RequestParam String updateText){
         subscriberService.notifySubscribers(updateText);
-        SMS smsMessage = new SMS("+84707854816", "Hello There Test Text From Restaurantly");
-        smsService.sendSMS(smsMessage);
         return "redirect:/admin";
     }
 

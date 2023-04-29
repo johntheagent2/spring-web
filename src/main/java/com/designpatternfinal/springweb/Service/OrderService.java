@@ -7,16 +7,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class OrderService implements IService{
+public class OrderService extends IService<Order>{
     @Autowired
     public OrderRepository orderRepository;
 
     @Override
-    public void saveOrUpdate(Object o) {
-        orderRepository.save((Order) o);
+    public void saveOrUpdate(Order order) {
+        orderRepository.save(order);
     }
 
-    public Iterable<Order> getAllOrder(){
+    public Iterable<Order> getAll(){
         return orderRepository.findAll();
     }
     public List<Order> findOrderOfAccount(String username){

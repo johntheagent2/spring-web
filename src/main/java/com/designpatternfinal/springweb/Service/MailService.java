@@ -1,15 +1,15 @@
 package com.designpatternfinal.springweb.Service;
 
-import com.designpatternfinal.springweb.model.Mail;
 import com.designpatternfinal.springweb.model.Subscribers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 
-@Service
-public class MailService {
+@Component
+public class MailService{
     @Autowired
     private JavaMailSender mailSender;
 

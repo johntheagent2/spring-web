@@ -1,5 +1,8 @@
 package com.designpatternfinal.springweb.Service;
 
-public interface IService<T> {
-    public void saveOrUpdate(T t);
+import com.designpatternfinal.springweb.model.Order;
+
+public abstract class IService<T> {
+    abstract void saveOrUpdate(T t);
+    abstract Iterable<T> getAll();
 }

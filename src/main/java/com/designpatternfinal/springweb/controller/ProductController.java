@@ -17,7 +17,7 @@ public class ProductController {
     FoodService foodService;
     @GetMapping()
     public String seeFoods(Model model){
-        Iterable<Food> iterable = foodService.findALlFood();
+        Iterable<Food> iterable = foodService.getAll();
         List<Food> foods =
                 StreamSupport.stream(iterable.spliterator(), false).toList();
         model.addAttribute("foods", foods);

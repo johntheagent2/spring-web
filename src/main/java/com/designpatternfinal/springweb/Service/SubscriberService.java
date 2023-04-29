@@ -2,14 +2,14 @@ package com.designpatternfinal.springweb.Service;
 
 import com.designpatternfinal.springweb.model.Account;
 import com.designpatternfinal.springweb.model.Subscribers;
-import com.designpatternfinal.springweb.repository.SubcriberRepository;
+import com.designpatternfinal.springweb.repository.SubscriberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SubscriberService {
     @Autowired
-    SubcriberRepository subcriberRepository;
+    SubscriberRepository subscriberRepository;
     @Autowired
     AccountService accountService;
     @Autowired
@@ -30,18 +30,15 @@ public class SubscriberService {
         Subscribers subscribers = new Subscribers();
         subscribers.setEmail(account.getEmail());
 
-        subcriberRepository.save(subscribers);
+        subscriberRepository.save(subscribers);
     }
     public void removeSubscriber(Account account){
         account.setSubscribed(false);
-
-        Subscribers subscribers = new Subscribers();
-        subscribers.setEmail(account.getEmail());
-
-        subcriberRepository.delete(subscribers);
+        Subscribers subscribers = subscriberRepository.getSubscribersByEmail(account.getEmail());
+        subscriberRepository.delete(subscribers);
     }
     public Iterable<Subscribers> getAllSubscriberEmail(){
-        return subcriberRepository.findAll();
+        return subscriberRepository.findAll();
     }
 
     public void notifySubscribers(String updateText){

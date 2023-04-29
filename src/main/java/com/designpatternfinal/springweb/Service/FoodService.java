@@ -6,20 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FoodService implements IService{
+public class FoodService extends IService<Food> {
     @Autowired
     public FoodRepository foodRepository;
     @Override
-    public void saveOrUpdate(Object o) {
-        foodRepository.save((Food) o);
+    public void saveOrUpdate(Food food) {
+        foodRepository.save(food);
     }
     public void deleteFood(int id){
         foodRepository.deleteById(id);
     }
-    public Iterable<Food> findALlFood(){
+    public Iterable<Food> getAll(){
         return foodRepository.findAll();
     }
-
     public Food findFood(int id){
         return foodRepository.findByFid(id);
     }
