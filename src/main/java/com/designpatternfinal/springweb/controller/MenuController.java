@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -50,7 +51,7 @@ public class MenuController {
     @GetMapping("/cart")
     public String showCart(Model model, HttpServletRequest request){
         List<Food> currentItemInCart = showCartInSession(request);
-
+        int totalPrice = 0;
         List<Food> foods = new ArrayList<>();
 
         for(Food food : currentItemInCart){
@@ -63,35 +64,29 @@ public class MenuController {
 
         for(Food food : foods){
             food.setPrice(food.getPrice() * food.getQuantity());
+            totalPrice = totalPrice + food.getPrice();
         }
 
-        System.out.println(foods);
         model.addAttribute("account", accountService.getCurrentAccount());
         model.addAttribute("foods", foods);
+        model.addAttribute("totalPrice", totalPrice);
         return "cart";
     }
 
-    @GetMapping("/delete_cart_item")
-    public String deleteCartItem(@RequestParam("radioName") int id, HttpServletRequest request){
-        List<Food> currentItemInCart = showCartInSession(request);
+    @GetMapping("/cart_delete")
+    public String deleteCartItem(@RequestParam("id") int id, HttpServletRequest request){
+        HttpSession s1=request.getSession();
 
-        List<Food> foods = new ArrayList<>();
-
-        for(Food food : currentItemInCart){
-            if(foods.contains(food)){
-                food.setQuantity(food.getQuantity() + 1);
-            }else{
-                foods.add(food);
+        List<Integer> list= (ArrayList<Integer>)(s1.getAttribute("list"));
+        for(Integer idInList : list){
+            if(idInList == id){
+                list.remove(idInList);
+                break;
             }
         }
 
-        for(Food food : foods){
-            if(food.getFid() == id){
-                food.setQuantity(food.getQuantity() - 1);
-            }
-        }
-
-        return "redirect:/cart";
+        s1.setAttribute("list",list);
+        return "redirect:/menu/cart";
     }
 
     @GetMapping("/checkout")

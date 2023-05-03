@@ -67,20 +67,16 @@
 
     <nav id="navbar" class="navbar order-last order-lg-0">
       <ul>
-        <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-        <li><a class="nav-link scrollto" href="#about">About</a></li>
-        <li><a class="nav-link scrollto" href="#menu">Menu</a></li>
-        <li><a class="nav-link scrollto" href="#specials">Specials</a></li>
-        <li><a class="nav-link scrollto" href="#events">Events</a></li>
-        <li><a class="nav-link scrollto" href="#chefs">Chefs</a></li>
-        <li><a class="nav-link scrollto" href="#gallery">Gallery</a></li>
-        <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+        <li><a class="nav-link scrollto active" href="/admin">Admin</a></li>
+        <li><a class="nav-link scrollto" href="/admin/admin_shipping">Shipping</a></li>
+        <li><a class="nav-link scrollto" href="/admin/admin_pickup">Pickup</a></li>
+        <li><a class="nav-link scrollto" href="/admin/ready">Ready</a></li>
+        <li><a class="nav-link scrollto" href="/admin/send_mail">Mail</a></li>
         <li th:if="${account}"  class="dropdown"><a href="#"><span th:text="${account.getUsername()}">Drop Down</span> <i class="bi bi-chevron-down"></i></a>
           <ul>
             <li th:if="${account.getRole()=='ADMIN'}"><a href="/admin">Add new dish</a></li>
             <li><a href="/profile">Profile</a></li>
             <li><a href="/menu">Menu</a></li>
-            <li><a href="/order">Your Order</a></li>
             <li><a href="/menu/cart">Cart</a></li>
             <!--                        <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>-->
             <!--                            <ul>-->
@@ -110,7 +106,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <h2>Admin</h2>
         <ol>
-          <li><a href="index.html">Home</a></li>
+          <li><a href="/">Home</a></li>
           <li>Admin</li>
         </ol>
       </div>
@@ -119,31 +115,31 @@
   </section>
 
   <section class="inner-page">
-      <div class="container" th:each="order : ${orderList}">
-        <table class="table table-dark mb-1">
+      <div class="container" style="border-radius: 2px; padding-top: 5px;padding-bottom: 5px" th:each="order : ${orderList}">
+        <table class="table mb-1" style="background-color: #1d1b16; border-color: #0c0b09;padding-top: 5px;padding-bottom: 5px">
           <thead>
           <tr>
-            <th scope="col">Num</th>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Quantity</th>
+            <th class="text-light" scope="col">Num</th>
+            <th class="text-light" scope="col">Name</th>
+            <th class="text-light" scope="col">Description</th>
+            <th class="text-light" scope="col">Quantity</th>
           </tr>
           </thead>
           <tbody>
           <tr th:each="orderItem, iter : ${order.cartItems}">
-            <th name="foodID" scope="row" th:text="${iter.index + 1}"></th>
-            <td th:text="${orderItem.food.foodName}"></td>
-            <td th:text="${orderItem.food.desc}"></td>
-            <td th:text="${orderItem.quantity}"></td>
+            <th class="text-light" name="foodID" scope="row" th:text="${iter.index + 1}"></th>
+            <td class="text-light" th:text="${orderItem.food.foodName}"></td>
+            <td class="text-light" th:text="${orderItem.food.desc}"></td>
+            <td class="text-light" th:text="${orderItem.quantity}"></td>
           </tr>
           </tbody>
         </table>
-        <h2 th:text="${order.status}"></h2>
+        <h2 class="text-light" th:text="${order.status}"></h2>
         <a th:href="@{/admin/update(id=${order.oid})}">
-          <button>Confirm</button>
+          <button  style="border: 2px solid black; background-color: #cda45e; color: white; border-radius: 50px;padding: 8px 25px;" >Confirm</button>
         </a>
         <a>
-          <button>Cancel</button>
+          <button  style="border: 2px solid black; background-color: #cda45e; color: white; border-radius: 50px;padding: 8px 25px;" >Cancel</button>
         </a>
       </div>
   </section>

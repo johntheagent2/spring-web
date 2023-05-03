@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.StreamSupport;
 
 @Controller
@@ -56,9 +57,11 @@ public class AdminController {
         List<Order> shippingOrderList = new ArrayList<>();
 
         for(ShippingPayment shippingPayment : orderList){
-            shippingOrderList.add(shippingPayment.getOrder());
+            if(!shippingPayment.getOrder().getStatus().equals("Done"))
+                shippingOrderList.add(shippingPayment.getOrder());
         }
 
+        model.addAttribute("account", accountService.getCurrentAccount());
         model.addAttribute("orderList", shippingOrderList);
         return "admin_shipping";
     }
@@ -69,17 +72,19 @@ public class AdminController {
         List<PickupPayment> orderList =
                 StreamSupport.stream(iterable.spliterator(), false).toList();
 
-        List<Order> shippingOrderList = new ArrayList<>();
+        List<Order> pickupOrderList = new ArrayList<>();
 
-        for(PickupPayment shippingPayment : orderList){
-            shippingOrderList.add(shippingPayment.getOrder());
+        for(PickupPayment pickupPayment : orderList){
+            if(!pickupPayment.getOrder().getStatus().equals("Done"))
+                pickupOrderList.add(pickupPayment.getOrder());
         }
 
-        model.addAttribute("orderList", shippingOrderList);
+        model.addAttribute("account", accountService.getCurrentAccount());
+        model.addAttribute("orderList", pickupOrderList);
         return "admin_pickup";
     }
 
-    @GetMapping ("/admin_ready")
+    @GetMapping ("/ready")
     public String seeAdminReady(Model model){
         Iterable<Order> iterable = orderService.getAll();
         List<Order> orderList =
@@ -92,9 +97,9 @@ public class AdminController {
                 shippingOrderList.add(order);
             }
         }
-
+        model.addAttribute("account", accountService.getCurrentAccount());
         model.addAttribute("orderList", shippingOrderList);
-        return "admin_ready";
+        return "ready";
     }
 
     @GetMapping("/send_mail")
