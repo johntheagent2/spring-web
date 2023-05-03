@@ -38,7 +38,7 @@ public class AdminController {
         List<Order> shippingOrderList = new ArrayList<>();
 
         for(Order order : orderList){
-            if(!order.getStatus().equals("Done")){
+            if(!order.getStatus().equals("Done") && !order.getStatus().equals("Ready")){
                 shippingOrderList.add(order);
             }
         }
@@ -100,6 +100,24 @@ public class AdminController {
         model.addAttribute("account", accountService.getCurrentAccount());
         model.addAttribute("orderList", shippingOrderList);
         return "ready";
+    }
+
+    @GetMapping ("/done")
+    public String seeAdminDone(Model model){
+        Iterable<Order> iterable = orderService.getAll();
+        List<Order> orderList =
+                StreamSupport.stream(iterable.spliterator(), false).toList();
+
+        List<Order> shippingOrderList = new ArrayList<>();
+
+        for(Order order : orderList){
+            if(order.getStatus().equals("Done")){
+                shippingOrderList.add(order);
+            }
+        }
+        model.addAttribute("account", accountService.getCurrentAccount());
+        model.addAttribute("orderList", shippingOrderList);
+        return "done";
     }
 
     @GetMapping("/send_mail")

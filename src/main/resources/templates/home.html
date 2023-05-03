@@ -77,7 +77,8 @@
                 <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
                 <li th:if="${account}"  class="dropdown"><a href="#"><span th:text="${account.getUsername()}">Drop Down</span> <i class="bi bi-chevron-down"></i></a>
                     <ul>
-                        <li th:if="${account.getRole()=='ADMIN'}"><a href="/admin">Add new dish</a></li>
+                        <li th:if="${account.getRole()=='ADMIN'}"><a href="/admin">Admin</a></li>
+                        <li th:if="${account.getRole()=='ADMIN'}"><a href="/product">Product</a></li>
                         <li><a href="/profile">Profile</a></li>
                         <li><a href="/menu">Menu</a></li>
                         <li><a href="/order">Your Order</a></li>

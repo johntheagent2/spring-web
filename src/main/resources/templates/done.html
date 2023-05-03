@@ -67,20 +67,17 @@
 
     <nav id="navbar" class="navbar order-last order-lg-0">
       <ul>
-        <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-        <li><a class="nav-link scrollto" href="#about">About</a></li>
-        <li><a class="nav-link scrollto" href="#menu">Menu</a></li>
-        <li><a class="nav-link scrollto" href="#specials">Specials</a></li>
-        <li><a class="nav-link scrollto" href="#events">Events</a></li>
-        <li><a class="nav-link scrollto" href="#chefs">Chefs</a></li>
-        <li><a class="nav-link scrollto" href="#gallery">Gallery</a></li>
-        <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+        <li><a class="nav-link scrollto" href="/admin">Admin</a></li>
+        <li><a class="nav-link scrollto" href="/admin/admin_shipping">Shipping</a></li>
+        <li><a class="nav-link scrollto" href="/admin/admin_pickup">Pickup</a></li>
+        <li><a class="nav-link scrollto" href="/admin/ready">Ready</a></li>
+        <li><a class="nav-link scrollto active" href="/admin/done">Done</a></li>
+        <li><a class="nav-link scrollto" href="/admin/send_mail">Mail</a></li>
         <li th:if="${account}"  class="dropdown"><a href="#"><span th:text="${account.getUsername()}">Drop Down</span> <i class="bi bi-chevron-down"></i></a>
           <ul>
             <li th:if="${account.getRole()=='ADMIN'}"><a href="/admin">Add new dish</a></li>
             <li><a href="/profile">Profile</a></li>
             <li><a href="/menu">Menu</a></li>
-            <li><a href="/order">Your Order</a></li>
             <li><a href="/menu/cart">Cart</a></li>
             <!--                        <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>-->
             <!--                            <ul>-->
@@ -108,11 +105,10 @@
     <div class="container">
 
       <div class="d-flex justify-content-between align-items-center">
-        <h2>Checkout</h2>
+        <h2>Done Orders</h2>
         <ol>
-          <li><a href="/menu">Menu</a></li>
-          <li><a href="/menu/checkout">Checkout</a></li>
-          <li>Admin</li>
+          <li><a href="/admin">Admin</a></li>
+          <li>Done</li>
         </ol>
       </div>
 
@@ -120,44 +116,32 @@
   </section>
 
   <section class="inner-page">
-    <div class="container" style="border-radius: 2px; padding-top: 5px;padding-bottom: 5px">
+    <div class="container" style="border-radius: 2px; padding-top: 5px;padding-bottom: 5px" th:each="order : ${orderList}">
       <table class="table mb-1" style="background-color: #1d1b16; border-color: #0c0b09;padding-top: 5px;padding-bottom: 5px">
         <thead>
         <tr>
           <th class="text-light" scope="col">Num</th>
-          <th class="text-light" scope="col">Food Name</th>
-          <th class="text-light" scope="col">Desc</th>
+          <th class="text-light" scope="col">Name</th>
+          <th class="text-light" scope="col">Description</th>
           <th class="text-light" scope="col">Quantity</th>
-          <th class="text-light" scope="col">Price</th>
-          <th class="text-light" scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="food, iter : ${foods}">
+        <tr th:each="orderItem, iter : ${order.cartItems}">
           <th class="text-light" name="foodID" scope="row" th:text="${iter.index + 1}"></th>
-          <td class="text-light" th:text="${food.foodName}"></td>
-          <td class="text-light" th:text="${food.desc}"></td>
-          <td class="text-light" th:text="${food.quantity}"></td>
-          <td class="text-light" th:text="${food.price}"></td>
-          <td>
-            <a th:href="@{/menu/cart_delete(id=${food.fid})}">
-              <button style="border: 2px solid black; background-color: #cda45e; color: white; border-radius: 50px;padding: 8px 25px;">Remove</button>
-            </a>
-          </td>
+          <td class="text-light" th:text="${orderItem.food.foodName}"></td>
+          <td class="text-light" th:text="${orderItem.food.desc}"></td>
+          <td class="text-light" th:text="${orderItem.quantity}"></td>
         </tr>
         </tbody>
       </table>
-      <form th:action="@{/menu/checkout}" method="get" style="margin-bottom: 10px; margin-top: 10px">
-        <label  class="radio-inline">
-          <input style="color: black" type="radio" th:name="radioName" id="selfPickup" value="selfPickup" checked="checked"/>Self Pickup
-        </label>
-        <label  class="radio-inline">
-          <input style="color: black"  type="radio" th:name="radioName"  id="shipping" value="shipping"/>Shipping
-        </label>
-        <br>
-        <h3 style="color: white" th:text="${totalPrice}"></h3>
-        <button style="border: 2px solid black; background-color: #cda45e; color: white; border-radius: 50px;padding: 8px 25px;" type="submit" value="Submit">Checkout</button></a>
-      </form>
+      <h2 class="text-light" th:text="${order.status}"></h2>
+      <a th:href="@{/admin/update(id=${order.oid})}">
+        <button  style="border: 2px solid black; background-color: #cda45e; color: white; border-radius: 50px;padding: 8px 25px;" >Confirm</button>
+      </a>
+      <a>
+        <button  style="border: 2px solid black; background-color: #cda45e; color: white; border-radius: 50px;padding: 8px 25px;" >Cancel</button>
+      </a>
     </div>
   </section>
 
@@ -216,6 +200,7 @@
           <form action="" method="post">
             <input type="email" name="email"><input type="submit" value="Subscribe">
           </form>
+
         </div>
 
       </div>

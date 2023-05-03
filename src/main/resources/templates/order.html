@@ -61,7 +61,7 @@
   <header id="header" class="fixed-top d-flex align-items-cente">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-lg-between">
 
-      <h1 class="logo me-auto me-lg-0"><a href="index.html">Restaurantly</a></h1>
+      <h1 class="logo me-auto me-lg-0"><a th:href="@{/}">Restaurantly</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo me-auto me-lg-0"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
@@ -74,28 +74,32 @@
           <li><a class="nav-link scrollto" href="#events">Events</a></li>
           <li><a class="nav-link scrollto" href="#chefs">Chefs</a></li>
           <li><a class="nav-link scrollto" href="#gallery">Gallery</a></li>
-          <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
+          <li th:if="${account}"  class="dropdown"><a href="#"><span th:text="${account.getUsername()}">Drop Down</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="#">Drop Down 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-                <ul>
-                  <li><a href="#">Deep Drop Down 1</a></li>
-                  <li><a href="#">Deep Drop Down 2</a></li>
-                  <li><a href="#">Deep Drop Down 3</a></li>
-                  <li><a href="#">Deep Drop Down 4</a></li>
-                  <li><a href="#">Deep Drop Down 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Drop Down 2</a></li>
-              <li><a href="#">Drop Down 3</a></li>
-              <li><a href="#">Drop Down 4</a></li>
+              <li th:if="${account.getRole()=='ADMIN'}"><a href="/admin">Add new dish</a></li>
+              <li><a href="/profile">Profile</a></li>
+              <li><a href="/menu">Menu</a></li>
+              <li><a href="/order">Your Order</a></li>
+              <li><a href="/menu/cart">Cart</a></li>
+              <!--                        <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>-->
+              <!--                            <ul>-->
+              <!--                                <li><a href="/product">Add New Product</a></li>-->
+              <!--                                <li><a href="#">Deep Drop Down 2</a></li>-->
+              <!--                                <li><a href="#">Deep Drop Down 3</a></li>-->
+              <!--                                <li><a href="#">Deep Drop Down 4</a></li>-->
+              <!--                                <li><a href="#">Deep Drop Down 5</a></li>-->
+              <!--                            </ul>-->
+              <!--                        </li>-->
+              <!--                        <li><a href="#">Drop Down 3</a></li>-->
+              <!--                        <li><a href="#">Drop Down 4</a></li>-->
             </ul>
           </li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
-      <a href="#book-a-table" class="book-a-table-btn scrollto d-none d-lg-flex">Book a table</a>
+      <a href="/logout" class="book-a-table-btn scrollto d-none d-lg-flex">Logout</a>
+
 
     </div>
   </header><!-- End Header -->
@@ -116,13 +120,26 @@
     </section>
 
     <section class="inner-page">
-      <div class="container">
-        <p>
-        <h3></h3>
-        <ul th:each="order : ${orderList}">
-          <li th:each="carItem : ${order.cartItems}" th:text="${carItem.food.foodName} + ' ' + ${carItem.food.desc} + ' ' + ${carItem.quantity} + ' ' + ${carItem.quantity * carItem.food.price}"></li>
-        </ul>
-        </p>
+      <div class="container" style="border-radius: 2px; padding-top: 5px;padding-bottom: 5px" th:each="order : ${orderList}">
+        <table class="table mb-1" style="background-color: #1d1b16; border-color: #0c0b09;padding-top: 5px;padding-bottom: 5px">
+          <thead>
+          <tr>
+            <th class="text-light" scope="col">Num</th>
+            <th class="text-light" scope="col">Name</th>
+            <th class="text-light" scope="col">Description</th>
+            <th class="text-light" scope="col">Quantity</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="orderItem, iter : ${order.cartItems}">
+            <th class="text-light" name="foodID" scope="row" th:text="${iter.index + 1}"></th>
+            <td class="text-light" th:text="${orderItem.food.foodName}"></td>
+            <td class="text-light" th:text="${orderItem.food.desc}"></td>
+            <td class="text-light" th:text="${orderItem.quantity}"></td>
+          </tr>
+          </tbody>
+        </table>
+        <h2 class="text-light" style="align-content: center" th:text="${order.status}"></h2>
       </div>
     </section>
 

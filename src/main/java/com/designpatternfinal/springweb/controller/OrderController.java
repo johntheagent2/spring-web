@@ -24,8 +24,19 @@ public class OrderController {
     AccountService accountService;
     @GetMapping("/order")
     public String allFood(Model model){
-        List<Order> orderList = orderService.findOrderOfAccount(accountService.getCurrentAccount().getUsername());
-        model.addAttribute("orderList", orderList);
+        Iterable<Order> iterable = orderService.getAll();
+        List<Order> orderList =
+                StreamSupport.stream(iterable.spliterator(), false).toList();
+
+        List<Order> shippingOrderList = new ArrayList<>();
+
+        for(Order order : orderList){
+            if(!order.getStatus().equals("Done")){
+                shippingOrderList.add(order);
+            }
+        }
+        model.addAttribute("account", accountService.getCurrentAccount());
+        model.addAttribute("orderList", shippingOrderList);
         return "order";
     }
 }

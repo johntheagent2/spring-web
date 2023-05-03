@@ -23,33 +23,8 @@ public class LoginController {
         return "login";
     }
 
-//    @GetMapping("/logout")
-//    public String logout(){
-//        SecurityContextHolder.clearContext();
-//        System.out.println("Dang xuat thanh cong");
-//        return "redirect:/login";
-//    }
-
-//    @PostMapping("/login")
-//    public String login(String username, String password, Model model, HttpServletResponse resp){
-//        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-//
-//        try{
-//            Authentication success = auth.authenticate(token);
-//            System.out.println("Dang nhap thanh cong " + success.getName());
-//
-//            SecurityContextHolder.getContext().setAuthentication(success);
-//            return "redirect:/";
-//
-//        }catch (BadCredentialsException e){
-//            model.addAttribute("error", "Bad Credential Exception");
-//        }catch (LockedException e){
-//            model.addAttribute("error", "Locked Exception");
-//        }catch (DisabledException e){
-//            model.addAttribute("error", "Disabled Exception");
-//        }catch (AccountExpiredException e){
-//            model.addAttribute("error", "Account Expired Exception");
-//        }
-//        return "login";
-//    }
+    @PostMapping("/login")
+    public String loginSuccess(){
+        return "redirect:/";
+    }
 }
