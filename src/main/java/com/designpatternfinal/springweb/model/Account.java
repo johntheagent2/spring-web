@@ -18,6 +18,6 @@ public class Account {
     private String address;
     private String phoneNum;
     private String email;
-    private String role;
+    private String role = "USER";
     private boolean isSubscribed = false;
 }

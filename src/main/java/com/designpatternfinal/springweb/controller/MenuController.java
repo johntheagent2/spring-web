@@ -38,6 +38,7 @@ public class MenuController {
         List<Food> foods =
                 StreamSupport.stream(iterable.spliterator(), false).toList();
         model.addAttribute("foods", foods);
+        model.addAttribute("account", accountService.getCurrentAccount());
         return "menu";
     }
 

@@ -67,11 +67,14 @@
 
     <nav id="navbar" class="navbar order-last order-lg-0">
       <ul>
-        <li><a class="nav-link scrollto active" href="/admin">Admin</a></li>
-        <li><a class="nav-link scrollto" href="/admin/admin_shipping">Shipping</a></li>
-        <li><a class="nav-link scrollto" href="/admin/admin_pickup">Pickup</a></li>
-        <li><a class="nav-link scrollto" href="/admin/ready">Ready</a></li>
-        <li><a class="nav-link scrollto" href="/admin/send_mail">Mail</a></li>
+        <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+        <li><a class="nav-link scrollto" href="#about">About</a></li>
+        <li><a class="nav-link scrollto" href="#menu">Menu</a></li>
+        <li><a class="nav-link scrollto" href="#specials">Specials</a></li>
+        <li><a class="nav-link scrollto" href="#events">Events</a></li>
+        <li><a class="nav-link scrollto" href="#chefs">Chefs</a></li>
+        <li><a class="nav-link scrollto" href="#gallery">Gallery</a></li>
+        <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
         <li th:if="${account}"  class="dropdown"><a href="#"><span th:text="${account.getUsername()}">Drop Down</span> <i class="bi bi-chevron-down"></i></a>
           <ul>
             <li th:if="${account.getRole()=='ADMIN'}"><a href="/admin">Add new dish</a></li>
@@ -105,7 +108,7 @@
     <div class="container">
 
       <div class="d-flex justify-content-between align-items-center">
-        <h2>Admin</h2>
+        <h2>Menu</h2>
         <ol>
           <li><a href="/">Home</a></li>
           <li>Menu</li>
